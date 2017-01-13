@@ -9,7 +9,7 @@ RSpec.describe Application do
   end
 
   it 'returns valid response' do
-    get '/'
-    expect(last_response.body).to eq 'ab'
+    get '/hello?name=Peter'
+    expect(last_response.body).to eq 'Hello, Peter'
   end
 end

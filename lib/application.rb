@@ -1,5 +1,8 @@
 class Application
-  def call(_env)
-    [200, { 'Content-Type' => 'text/plain' }, ['ab']]
+  def call(env)
+    case env[:PATH_INFO]
+    when '/hello'
+      HelloAction.new.call(params)
+    end
   end
 end
