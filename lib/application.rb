@@ -6,13 +6,14 @@ class Application
   def call(env)
     params = get_params(env)
 
-    routes = {
-      ['GET', '/hello'] => Actions::HelloAction,
-      ['GET', '/halt']  => Actions::HaltAction
-    }
-    routes.default = Actions::NotFoundAction
+    router = Framework::Router.new
+    router.instance_eval do
+      get '/hello', to: Actions::HelloAction
+      get '/halt', to: Actions::HaltAction
+      get '*', to: Actions::NotFoundAction
+    end
 
-    action = routes[ [env['REQUEST_METHOD'], env['PATH_INFO']] ]
+    action = router.call env
 
     catch(:halt){ action.new.call(params) }
   end
